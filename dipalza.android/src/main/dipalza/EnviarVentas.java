@@ -37,7 +37,6 @@ import com.grupo.basedatos.EncabezadoVenta;
 import com.grupo.basedatos.IDUnit;
 import com.grupo.basedatos.ItemVenta;
 import com.grupo.basedatos.ItemesVenta;
-import com.grupo.basedatos.NroItemesVenta;
 import com.grupo.basedatos.Venta;
 import com.grupo.biblioteca.EMessagesTypes;
 import com.grupo.biblioteca.MessageToTransmit;
@@ -135,44 +134,18 @@ public class EnviarVentas extends ActivityHandler implements OnClickListener
 			for (OTVenta venta : ventas)
 			{
 			    Venta rVenta = new Venta();
-				/**
-				 * Se envía el encabezado.
-				 */
 				OTEVenta otEncabezado = venta.getEncabezado();
 				EncabezadoVenta encabezado = fromOTEVEntaToEncabezado(otEncabezado);
-
-//				MessageToTransmit mensaje = new MessageToTransmit();
-//				mensaje.setIdPalm(identificacion);
-//				mensaje.setType(EMessagesTypes.MSG_ENCABEZADO);
-//				mensaje.setData(encabezado);
-//				enviarMensaje(mensaje);
 				rVenta.setEncabezado(encabezado);
 				notificarAvance(ENCABEZADO, ++nroVentas, ventas.size());
 
 				List<OTItemVenta> itemVentas = venta.getRegistrosVenta();
-				/**
-				 * Se envía la cantidad de itemes de venta.
-				 */
-//				mensaje = new MessageToTransmit();
-//				mensaje.setIdPalm(identificacion);
-//				mensaje.setType(EMessagesTypes.MSG_NROITEMESVENTA);
-//				NroItemesVenta nroItems = new NroItemesVenta(itemVentas.size());
-//				mensaje.setData(nroItems);
-//				enviarMensaje(mensaje);
-				/**
-				 * Se envían los itemes de venta.
-				 */
 				int nroRegistros = 0;
 				notificarAvance(DETALLE, 0, itemVentas.size());
 				ItemesVenta rIemesVenta = new ItemesVenta(); 
 				for (OTItemVenta item : itemVentas)
 				{
 					ItemVenta itemVenta = fromOTItemVentaToItemVenta(item);
-//					mensaje = new MessageToTransmit();
-//					mensaje.setIdPalm(identificacion);
-//					mensaje.setType(EMessagesTypes.MSG_ITEMVENTA);
-//					mensaje.setData(itemVenta);
-//					enviarMensaje(mensaje);
 					rIemesVenta.add(itemVenta);
 					notificarAvance(DETALLE, ++nroRegistros, itemVentas.size());
 				}

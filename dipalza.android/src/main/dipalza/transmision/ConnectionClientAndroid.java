@@ -197,9 +197,9 @@ public class ConnectionClientAndroid extends Notifier implements Runnable, IEmmi
     try {
       this.alive = false;
       this.socketClient.close();
-      log.info("Conexi�n cerrada");
+      log.info("Conexión cerrada");
     } catch (IOException e) {
-      log.severe("Error al cerrar la conexi�n.");
+      log.severe("Error al cerrar la conexión.");
     }
   }
 

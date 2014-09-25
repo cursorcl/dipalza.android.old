@@ -20,49 +20,40 @@ public class OTEVenta implements Serializable, IOTObject {
 	private long idVenta;
 	/**
 	 * Identificador del cliente en la tabla de clientes.
-	 * @uml.property  name="idCliente"
 	 */
 	private long idCliente;
 	/**
 	 * Cliente de la venta.
-	 * @uml.property  name="cliente"
 	 */
 	private String cliente;
 	/**
 	 * Condicion de ventas.
-	 * @uml.property  name="condicionVenta"
 	 */
 	private int condicionVenta;
 	/**
 	 * Valor neto total de la venta.
-	 * @uml.property  name="neto"
 	 */
 	private Double neto;
 	/**
 	 * Valor del iva total de la venta.
-	 * @uml.property  name="iva"
 	 */
 	private Double iva;
 	/**
 	 * Valor del total ila.
-	 * @uml.property  name="ila"
 	 */
 	private Double ila;
 	/**
 	 * Identificador del vendedor asociado a la venta.
-	 * @uml.property  name="vendedor"
 	 */
 	private String vendedor;
 	/**
 	 * Fecha de la venta.
-	 * @uml.property  name="fecha"
 	 */
 	private Date fecha;
 
 	/**
 	 * Obtiene el valor del atributo idVenta.
 	 * @return  El valor de idVenta.
-	 * @uml.property  name="idVenta"
 	 */
 	public final long getIdVenta() {
 		return idVenta;
