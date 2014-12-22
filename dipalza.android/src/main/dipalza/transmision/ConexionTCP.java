@@ -120,6 +120,7 @@ public class ConexionTCP implements Runnable
 				catch (ClassNotFoundException e)
 				{
 					// Notificar falla en la recepcion de algo.
+				  e.printStackTrace();
 				}
 			}
 			disconnect();
@@ -127,10 +128,12 @@ public class ConexionTCP implements Runnable
 		catch (UnknownHostException e)
 		{
 			// Notificar un error desconocido desde el host.
+		  e.printStackTrace();
 		}
 		catch (IOException e)
 		{
 			// notificar un error de entrada / salida.
+		  e.printStackTrace();
 		}
 	}
 
