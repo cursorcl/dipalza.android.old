@@ -7,7 +7,7 @@ public class OTCliente implements Serializable, IOTObject {
 	/**
 	 * Numero serial de la clase.
 	 */
-	private static final long serialVersionUID = -104402940585684893L;
+	private static final long serialVersionUID = 1L;
 	/**
 	 * @uml.property  name="idCliente"
 	 */

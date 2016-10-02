@@ -7,9 +7,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import android.os.Handler;
-
 import com.grupo.biblioteca.MessageToTransmit;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import main.dipalza.ActivityHandler;
+import main.dipalza.utilitarios.EmisorMensajes;
 
 public class ConexionTCP implements Runnable
 {
@@ -46,6 +51,8 @@ public class ConexionTCP implements Runnable
 	 * Quien realmente procesa la informacion.
 	 */
 	private ProcesadorCliente procesador;
+	
+	Context falseContext;
 
 	public ConexionTCP(String ipDirection, int port)
 	{
@@ -54,11 +61,6 @@ public class ConexionTCP implements Runnable
 		this.port = port;
 	}
 
-	public ConexionTCP(Socket socket)
-	{
-		super();
-		this.socket = socket;
-	}
 
 	/**
 	 * Conecta el socket e inicia la recepcion de datos.
@@ -78,13 +80,13 @@ public class ConexionTCP implements Runnable
 	{
 		procesador = new ProcesadorCliente();
 		procesador.setHandler(this.handler);
-		// Notificar que se esta conectando al servidor.
+
 		socket = new Socket(ipDirection, port);
 		output = new ObjectOutputStream(socket.getOutputStream());
 		input = new ObjectInputStream(socket.getInputStream());
 		alive = true;
-		// Notificar que se encuetra conectado.
 		
+		notifyNotification("Conectado al servidor");
 		start();
 	}
 
@@ -94,6 +96,7 @@ public class ConexionTCP implements Runnable
 		{
 			procesador.setAlive(false);
 			socket.close();
+			notifyNotification("Desconetado del servidor");
 		}
 	}
 
@@ -117,22 +120,23 @@ public class ConexionTCP implements Runnable
 						procesador.addToProcess((MessageToTransmit) obj);
 					}
 				}
-				catch (ClassNotFoundException e)
+				catch (Exception e)
 				{
-					// Notificar falla en la recepcion de algo.
 				  e.printStackTrace();
+				  //notifyError("Se ha producido un error en la transferencia");
+				  alive =false;
 				}
 			}
 			disconnect();
 		}
 		catch (UnknownHostException e)
 		{
-			// Notificar un error desconocido desde el host.
+		  notifyError("Direccion de servidor desconocida");
 		  e.printStackTrace();
 		}
 		catch (IOException e)
 		{
-			// notificar un error de entrada / salida.
+		  notifyError("Error de escritura/lectura");
 		  e.printStackTrace();
 		}
 	}
@@ -152,7 +156,6 @@ public class ConexionTCP implements Runnable
 		}
 		catch (Exception e)
 		{
-			// Enviar notificacion de falla en el envio de algo.
 			result = false;
 		}
 		return result;
@@ -204,5 +207,30 @@ public class ConexionTCP implements Runnable
 		this.ipDirection = ipDirection;
 	}
 
+	
+	  private void notifyError(String error) {
+	    if (getHandler() != null) {
+	      Message message = getHandler().obtainMessage();
+	      message.what = ActivityHandler.MSG_ERROR;
+	      Bundle bundle = new Bundle();
+	      bundle.putString(ActivityHandler.CAUSA, error);
+	      message.setData(bundle);
+	      getHandler().sendMessage(message);
+	    }
+
+	  }
+
+	  private void notifyNotification(String atributo) {
+	    if (getHandler() != null) {
+	      Message message = getHandler().obtainMessage();
+	      message.what = ActivityHandler.MSG_NOTIFICACION;
+	      Bundle bundle = new Bundle();
+	      bundle.putString(ActivityHandler.ATRIBUTO, atributo);
+	      message.setData(bundle);
+	      getHandler().sendMessage(message);
+	    }
+
+	  }
+	  
 	
 }

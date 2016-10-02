@@ -106,7 +106,11 @@
         	android:inputType="number"
         	android:nextFocusLeft="@+id/autoCompleteProducto"
         	android:nextFocusRight="@+id/autoCompleteProducto"
-        	android:nextFocusUp="@+id/autoCompleteProducto" >
+        	android:nextFocusUp="@+id/autoCompleteProducto"
+            android:editable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
           <requestFocus />
         </AutoCompleteTextView>
 
@@ -119,7 +123,11 @@
         	android:nextFocusDown="@+id/textCantidad"
         	android:nextFocusLeft="@id/autoCompleteArticulo"
         	android:nextFocusRight="@+id/textCantidad"
-        	android:nextFocusUp="@id/autoCompleteArticulo" />
+        	android:nextFocusUp="@id/autoCompleteArticulo"
+            android:editable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
 
     </LinearLayout>
 
@@ -131,39 +139,38 @@
             android:id="@+id/labelPrecio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Precio" android:layout_weight="1" android:gravity="center_horizontal"/>
+            android:text="@string/precio" android:layout_weight="1" android:gravity="center_horizontal"/>
 
         <TextView
             android:id="@+id/labelUnidad"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Unidad de medida" android:layout_weight="1" android:gravity="center_horizontal"/>
+            android:text="@string/unidad_de_medida" android:layout_weight="1" android:gravity="center_horizontal"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:weightSum="10">
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
 
-        <TextView
-            android:id="@+id/textPrecioProducto"
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="5"
-            android:gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceLarge" 
-            />
-
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/textPrecioProducto"
+            android:enabled="false"
+            android:editable="false"
+            android:focusable="false" />
 
         <TextView
             android:id="@+id/textUnidadProducto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="5dp"
-            android:layout_weight="5"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center_horizontal"/>
-
+            android:layout_weight="2.65"
+            android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center_horizontal"
+            android:singleLine="false" />
     </LinearLayout>
 
     <TextView
@@ -185,8 +192,11 @@
     	android:nextFocusRight="@+id/textDescuento"
       android:nextFocusLeft="@id/autoCompleteArticulo"
       android:nextFocusUp="@id/autoCompleteArticulo"
-    	
-    	 />
+
+        android:focusable="true"
+        android:enabled="true"
+        android:editable="true"
+        android:focusableInTouchMode="true" />
 
 
     <TextView
@@ -205,7 +215,10 @@
     	android:ems="10"
     	android:inputType="number"
     	android:nextFocusLeft="@+id/textCantidad"
-    	android:nextFocusUp="@+id/textCantidad" 
-    	/>
+    	android:nextFocusUp="@+id/textCantidad"
+        android:focusable="true"
+        android:enabled="true"
+        android:editable="true"
+        android:focusableInTouchMode="true" />
 
 </LinearLayout>

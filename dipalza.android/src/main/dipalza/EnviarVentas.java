@@ -372,4 +372,11 @@ public class EnviarVentas extends ActivityHandler implements OnClickListener
 		confirm.setNegativeButton("No", null);
 		confirm.show();
 	}
+
+  @Override
+  protected void procesarMensajeFinalizado(Message message) {
+    if (message.what != ActivityHandler.MSG_FINALIZADO)
+      return;
+    EmisorMensajes.mostrarMensaje(this, "FINALIZADO", "Transferencia finalizada");
+  }
 }

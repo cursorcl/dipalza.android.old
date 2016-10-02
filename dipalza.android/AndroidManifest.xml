@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="main.dipalza"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1">
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10" android:maxSdkVersion="21"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +13,7 @@
     <application
         android:name="main.dipalza.DipalzaApplication"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/Theme.D1" >
+        android:theme="@style/Theme.D1" android:permission="android.permission.ACCESS_FINE_LOCATION" android:allowBackup="true">
         <activity
             android:name=".MainDipalza"
             android:configChanges="keyboard|keyboardHidden|orientation"

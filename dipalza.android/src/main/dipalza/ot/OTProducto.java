@@ -40,6 +40,7 @@ public class OTProducto implements Serializable, IOTObject{
 	 * Precio del producto.
 	 */
 	private Double precio;
+
 	/**
 	 * Precio de costo del producto.
 	 */

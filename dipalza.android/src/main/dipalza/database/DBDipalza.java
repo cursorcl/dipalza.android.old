@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import main.dipalza.ot.OTCliente;
-import main.dipalza.ot.OTEVenta;
-import main.dipalza.ot.OTItemVenta;
-import main.dipalza.ot.OTProducto;
-import main.dipalza.ot.OTProductoVenta;
-import main.dipalza.ot.OTResumenVentas;
-import main.dipalza.ot.OTVenta;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,56 +13,38 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import main.dipalza.ot.OTCliente;
+import main.dipalza.ot.OTEVenta;
+import main.dipalza.ot.OTItemVenta;
+import main.dipalza.ot.OTProducto;
+import main.dipalza.ot.OTProductoVenta;
+import main.dipalza.ot.OTResumenVentas;
+import main.dipalza.ot.OTVenta;
 
 public class DBDipalza extends SQLiteOpenHelper {
 	private static final String DELETE_FROM = "DELETE FROM ";
 	private static final String TAG = "DBDipalza";
 	private static final int DATABASE_VERSION = 1;
-	private static final String DATABASE_NAME = "sqldipalza.db";
+	public static final String DATABASE_NAME = "sqldipalza.db";
 	private static final String CLIENTES = "Clientes";
 	private static final String DVENTA = "DVenta";
 	private static final String EVENTA = "EVenta";
 	private static final String PRODUCTOS = "Productos";
-	/**
-	 * @uml.property name="db"
-	 * @uml.associationEnd
-	 */
+	private static final String ESPECIALES = "Especiales";
+
 	SQLiteDatabase db;
-	/**
-	 * @uml.property name="sqlCreateClientes"
-	 */
+
 	String sqlCreateClientes = "CREATE TABLE Clientes (idCliente INTEGER PRIMARY KEY, ruta TEXT, vendendor TEXT, codigo TEXT, rut TEXT, nombre TEXT, direccion TEXT, telefono TEXT, comuna TEXT, ciudad TEXT)";
-	/**
-	 * @uml.property name="sqlCreateDVenta"
-	 */
 	String sqlCreateDVenta = "CREATE TABLE DVenta (idVenta INTEGER, idProducto INTEGER, cantidad NUMERIC, neto NUMERIC, descuento NUMERIC, ila NUMERIC)";
-	/**
-	 * @uml.property name="sqlCreateEVenta"
-	 */
 	String sqlCreateEVenta = "CREATE TABLE EVenta (idVenta INTEGER PRIMARY KEY, idCliente INTEGER, condicionVenta INTEGER, neto NUMERIC, iva NUMERIC, ila NUMERIC, vendedor TEXT, fecha DATETIME)";
-	/**
-	 * @uml.property name="sqlCreateProductos"
-	 */
 	String sqlCreateProductos = "CREATE TABLE Productos (idProducto INTEGER PRIMARY KEY, articulo TEXT, nombre TEXT, unidad TEXT, proveedor TEXT, stock NUMERIC, precio NUMERIC, costo NUMERIC, ila NUMERIC)";
-	/**
-	 * @uml.property name="sqlCreateidxClientes"
-	 */
+	String sqlCreateEspeciales = "CREATE TABLE Especiales (articulo TEXT)";
 	String sqlCreateidxClientes = "CREATE INDEX idxClientes ON Clientes(idCliente ASC)";
-	/**
-	 * @uml.property name="sqlCreateidxVentas"
-	 */
 	String sqlCreateidxVentas = "CREATE INDEX idxVentas ON EVenta(idVenta ASC)";
-	/**
-	 * @uml.property name="sqlCreateidxProductos"
-	 */
 	String sqlCreateidxProductos = "CREATE INDEX idxProductos ON Productos(idProducto ASC)";
-	/**
-	 * @uml.property name="vendedor"
-	 */
+	String sqlCreateidxEspecialesArticulo = "CREATE INDEX idxEspecialesArticulo ON Especiales(articulo ASC)";
+
 	private String vendedor;
-	/**
-	 * @uml.property name="ruta"
-	 */
 	private String ruta;
 
 	public DBDipalza(Context context) {
@@ -78,6 +53,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				.getDefaultSharedPreferences(context);
 		vendedor = prefs.getString("pref_vendedor", "");
 		ruta = prefs.getString("pref_ruta", "");
+		
 	}
 
 	public void open() {
@@ -88,42 +64,19 @@ public class DBDipalza extends SQLiteOpenHelper {
 		db.close();
 	}
 
-	/**
-	 * Establece el valor del OT en la base de datos. Se mantiene un registro
-	 * unico de inicializacion.
-	 * 
-	 * @param inicializacion
-	 *            Valor de inicializcion del sistema.
-	 */
-	private void crearClientesDummy(SQLiteDatabase db) {
-		for (int n = 0; n < 5; n++) {
-			ContentValues registro = new ContentValues();
-			Log.w(TAG, "Insertando cliente " + n);
-			registro.put("idCliente", n);
-			registro.put("ruta", "00" + n);
-			registro.put("vendendor", "00" + n);
-			registro.put("codigo", "00" + n);
-			registro.put("rut", "10613781-" + n);
-			registro.put("nombre", "Nombre " + n);
-			registro.put("direccion", "Dirección " + n);
-			registro.put("telefono", "1234567" + n);
-			registro.put("comuna", "Comuna " + n);
-			registro.put("ciudad", "Coidad " + n);
-			db.insert(CLIENTES, null, registro);
-		}
-	}
-
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.w(TAG, "Creando base de datos");
 		db.execSQL(sqlCreateClientes);
 		db.execSQL(sqlCreateDVenta);
 		db.execSQL(sqlCreateEVenta);
+		db.execSQL(sqlCreateEspeciales);
 		db.execSQL(sqlCreateProductos);
 		db.execSQL(sqlCreateidxClientes);
 		db.execSQL(sqlCreateidxVentas);
 		db.execSQL(sqlCreateidxProductos);
-		crearClientesDummy(db);
+		db.execSQL(sqlCreateidxEspecialesArticulo);
+
 	}
 
 	@Override
@@ -135,13 +88,16 @@ public class DBDipalza extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + DVENTA);
 		db.execSQL("DROP TABLE IF EXISTS " + EVENTA);
 		db.execSQL("DROP TABLE IF EXISTS " + PRODUCTOS);
+		db.execSQL("DROP TABLE IF EXISTS " + ESPECIALES);
 		db.execSQL(sqlCreateClientes);
 		db.execSQL(sqlCreateDVenta);
 		db.execSQL(sqlCreateEVenta);
 		db.execSQL(sqlCreateProductos);
+		db.execSQL(sqlCreateEspeciales);
 		db.execSQL(sqlCreateidxClientes);
 		db.execSQL(sqlCreateidxVentas);
 		db.execSQL(sqlCreateidxProductos);
+		db.execSQL(sqlCreateidxEspecialesArticulo);
 	}
 
 	/**
@@ -174,7 +130,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				cliente.setCiudad(ciudad);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return cliente;
@@ -219,7 +175,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				list.add(cliente);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return list;
@@ -246,36 +202,10 @@ public class DBDipalza extends SQLiteOpenHelper {
 				list.add(producto);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return list;
-	}
-
-	public OTProducto getProducto(String articulo) {
-		OTProducto producto = null;
-		Cursor cursor = this.db.query(PRODUCTOS, null, "idProducto = "
-				+ articulo, null, null, null, null);
-		if (cursor.moveToFirst()) {
-			do {
-				producto = new OTProducto();
-				// idProducto, articulo, nombre, unidad, proveedor, stock,
-				// precio, costo, ila
-				producto.setIdProducto(cursor.getInt(0));
-				producto.setArticulo(cursor.getString(1).trim());
-				producto.setNombre(cursor.getString(2).trim());
-				producto.setUnidad(cursor.getString(3).trim());
-				producto.setProveedor(cursor.getString(4).trim());
-				producto.setStock(cursor.getDouble(5));
-				producto.setPrecio(cursor.getDouble(6));
-				producto.setCosto(cursor.getDouble(7));
-				producto.setIla(cursor.getDouble(8));
-			} while (cursor.moveToNext());
-		}
-		if (cursor != null && !cursor.isClosed()) {
-			cursor.close();
-		}
-		return producto;
 	}
 
 	public OTProducto getProducto(int idProducto) {
@@ -298,7 +228,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				producto.setIla(cursor.getDouble(8));
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return producto;
@@ -320,6 +250,8 @@ public class DBDipalza extends SQLiteOpenHelper {
 	}
 
 	public void grabarCliente(final OTCliente cliente) {
+	  try
+	  {
 		ContentValues registro = new ContentValues();
 		Log.w(TAG, "Insertando cliente " + cliente.getNombre());
 		registro.put("idCliente", cliente.getIdCliente());
@@ -333,6 +265,11 @@ public class DBDipalza extends SQLiteOpenHelper {
 		registro.put("comuna", cliente.getComuna());
 		registro.put("ciudad", cliente.getCiudad());
 		db.insert(CLIENTES, null, registro);
+	  }
+	  catch(Exception e)
+	  {
+	    e.printStackTrace();
+	  }
 	}
 
 	/**
@@ -369,8 +306,8 @@ public class DBDipalza extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * 
-	 * @param venta
+	 *  Grabar una venta en la BD
+	 * @param venta Registro de venta.
 	 */
 	public void grabarVenta(OTVenta venta) {
 		OTEVenta encabezado = venta.getEncabezado();
@@ -431,7 +368,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				}
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 
@@ -467,7 +404,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 
@@ -493,7 +430,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				eVenta.setFecha(new Date(cursor.getLong(7)));
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		List<OTItemVenta> itemesVenta = null;
@@ -514,7 +451,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				itemesVenta.add(itemVenta);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		venta.setEncabezado(eVenta);
@@ -524,8 +461,8 @@ public class DBDipalza extends SQLiteOpenHelper {
 
 	public List<OTVenta> obtenerListadoVentas() {
 		List<OTVenta> listadoVenta = new LinkedList<OTVenta>();
-		OTVenta venta = null;
-		OTEVenta eVenta = null;
+		OTVenta venta;
+		OTEVenta eVenta;
 		Cursor cursor = this.db.query(EVENTA, null, null, null, null, null,
 				"idVenta ASC");
 		if (cursor.moveToFirst()) {
@@ -569,7 +506,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 						}
 					} while (cursorDetalle.moveToNext());
 				}
-				if (cursorDetalle != null && !cursorDetalle.isClosed()) {
+				if (!cursorDetalle.isClosed()) {
 					cursorDetalle.close();
 				}
 				venta.setEncabezado(eVenta);
@@ -577,7 +514,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				listadoVenta.add(venta);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return listadoVenta;
@@ -616,7 +553,7 @@ public class DBDipalza extends SQLiteOpenHelper {
 				}
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return itemesVenta;
@@ -637,9 +574,54 @@ public class DBDipalza extends SQLiteOpenHelper {
 				resumen.setBruto(bruto);
 			} while (cursor.moveToNext());
 		}
-		if (cursor != null && !cursor.isClosed()) {
+		if (!cursor.isClosed()) {
 			cursor.close();
 		}
 		return resumen;
 	}
+
+	public List<String> obtenerEspeciales()
+	{
+		List<String> list = new ArrayList<String>();
+		Cursor cursor = this.db.query(ESPECIALES, null, null, null, null, null,
+				"articulo ASC");
+		if (cursor.moveToFirst()) {
+			do {
+				list.add(cursor.getString(1).trim());
+			} while (cursor.moveToNext());
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+		return list;
+	}
+
+	public boolean esEspecial(String articulo)
+	{
+		Cursor cursor = this.db.query(ESPECIALES, null, "articulo='" + articulo +"'",
+				null, null, null, null);
+		boolean esEspecial = cursor.moveToFirst();
+		if (!cursor.isClosed())
+			cursor.close();
+		return esEspecial;
+	}
+
+
+    public void grabarEspecial(final String especiales) {
+        ContentValues registro = new ContentValues();
+        registro.put("articulo", especiales);
+        db.insert(ESPECIALES, null, registro);
+    }
+
+    public void grabarEspecial(final List<String> especiales) {
+        if(especiales == null || especiales.isEmpty())
+            return;
+
+        for(String especial: especiales)
+            grabarEspecial(especial);
+    }
+
+    public void eliminarEspeciales() {
+        db.execSQL(DELETE_FROM + ESPECIALES);
+    }
 }

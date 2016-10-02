@@ -5,6 +5,7 @@ import java.util.List;
 import main.dipalza.database.DBDipalza;
 import main.dipalza.modelo.vistas.IModeloDipalza;
 import main.dipalza.ot.OTCliente;
+import main.dipalza.ot.OTEspeciales;
 import main.dipalza.ot.OTProducto;
 import main.dipalza.ot.OTProductoVenta;
 import main.dipalza.ot.OTResumenVentas;
@@ -88,4 +89,9 @@ public class ModeloDipalza implements IModeloDipalza
 	{
 		return dbDipalza.obtenerResumenVenta();
 	}
+
+	public List<String> obtenerEpesciales() { return dbDipalza.obtenerEspeciales();}
+	public boolean esEspecial(String code) { return dbDipalza.esEspecial(code);}
+	public void grabarEspecial(String especial) { dbDipalza.grabarEspecial(especial);}
+	public void grabarEspecial(List<String> especiales) { dbDipalza.grabarEspecial(especiales);}
 }

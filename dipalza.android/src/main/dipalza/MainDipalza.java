@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.nio.charset.Charset;
+
 public class MainDipalza extends DashboardActivity {
 
 	/**
@@ -14,6 +16,7 @@ public class MainDipalza extends DashboardActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_home);
 	}
 

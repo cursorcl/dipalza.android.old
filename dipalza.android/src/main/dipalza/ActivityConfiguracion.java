@@ -1,6 +1,5 @@
 package main.dipalza;
 
-// ~--- non-JDK imports --------------------------------------------------------
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import android.preference.PreferenceManager;
  * @version Enter version here..., 22.mayo 2012
  * @author Enter your name here...
  */
-public class ActivityConfiguracion extends PreferenceActivity implements 
+public class ActivityConfiguracion extends PreferenceActivity implements
 				 OnSharedPreferenceChangeListener
 {
 	public final static String PREF_IP = "pref_ip";
@@ -104,12 +103,12 @@ public class ActivityConfiguracion extends PreferenceActivity implements
 	{
 		super.onResume();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		vendedor.setSummary("Código de Vendedor:" + preferences.getString(PREF_VENDEDOR, ""));
-		ruta.setSummary("Código de Ruta:" + preferences.getString(PREF_RUTA, ""));
-		rutaAdicional.setSummary("Código de Ruta:" + preferences.getString(PREF_RUTA_ADICIONAL, ""));
-		iva.setSummary("Valor I.V.A.:" + preferences.getString(PREF_IVA, "") + "%");
-		ila.setSummary("Valor I.L.A.:" + preferences.getString(PREF_ILA, "") + "%");
-		ip.setSummary("Dirección IP del Servidor:" + preferences.getString(PREF_IP, ""));		
+		vendedor.setSummary(getString(R.string.config_vendedor) + preferences.getString(PREF_VENDEDOR, ""));
+		ruta.setSummary(getString(R.string.config_ruta) + preferences.getString(PREF_RUTA, ""));
+		rutaAdicional.setSummary(getString(R.string.config_ruta) + preferences.getString(PREF_RUTA_ADICIONAL, ""));
+		iva.setSummary(getString(R.string.config_iva) + preferences.getString(PREF_IVA, "") + "%");
+		ila.setSummary(getString(R.string.config_ila) + preferences.getString(PREF_ILA, "") + "%");
+		ip.setSummary(getString(R.string.config_direccion) + preferences.getString(PREF_IP, ""));
 		// Set up a listener whenever a key changes
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
@@ -118,13 +117,12 @@ public class ActivityConfiguracion extends PreferenceActivity implements
 	/************** Shared preferences ****************/
 	public void onSharedPreferenceChanged(SharedPreferences preferences, String key)
 	{
-		vendedor.setSummary("Vendedor:" + preferences.getString(PREF_VENDEDOR, ""));
-		vendedor.setSummary("Código de Vendedor:" + preferences.getString(PREF_VENDEDOR, ""));
-		ruta.setSummary("Código de Ruta:" + preferences.getString(PREF_RUTA, ""));
-		rutaAdicional.setSummary("Código de Ruta:" + preferences.getString(PREF_RUTA_ADICIONAL, ""));
-		iva.setSummary("Valor I.V.A.:" + preferences.getString(PREF_IVA, "") + "%");
-		ila.setSummary("Valor I.L.A.:" + preferences.getString(PREF_ILA, "") + "%");
-		ip.setSummary("Dirección IP del Servidor:" + preferences.getString(PREF_IP, ""));
+		vendedor.setSummary(getString(R.string.config_vendedor) + preferences.getString(PREF_VENDEDOR, ""));
+		ruta.setSummary(getString(R.string.config_ruta) + preferences.getString(PREF_RUTA, ""));
+		rutaAdicional.setSummary(getString(R.string.config_ruta) + preferences.getString(PREF_RUTA_ADICIONAL, ""));
+		iva.setSummary(getString(R.string.config_iva) + preferences.getString(PREF_IVA, "") + "%");
+		ila.setSummary(getString(R.string.config_ila) + preferences.getString(PREF_ILA, "") + "%");
+		ip.setSummary(getString(R.string.config_direccion) + preferences.getString(PREF_IP, ""));
 	}
 }
 // ~ Formatted by Jindent --- http://www.jindent.com

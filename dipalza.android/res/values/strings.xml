@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, EjemploAndroidActivity!</string>
     <string name="app_name">Ventas Dipalza
@@ -32,4 +32,19 @@ Eliecer Osorio V. cursor.cl@gmail.com y Susan Farías Z. susan.farias@gmail.com<
     <string name="fehca_ultima_recepcion">Última recepción</string>
     <string name="fecha_ultima_transmision">Ultima Transmisión</string>
     <string name="stock">Stock</string>
+    <string name="unidad_de_medida">Unidad de medida</string>
+    <string name="precio">Precio</string>
+    <string name="txtEspeciales">Prod. Especiales</string>
+    <string name="config_direccion">Dirección IP del Servidor:</string>
+    <string name="config_vendedor">Código Vendedor:</string>
+    <string name="config_ruta">Código Ruta:</string>
+    <string name="config_iva">Valor I.V.A.:</string>
+    <string name="config_ila">Valor I.L.A.:</string>
+    <string name="WIFI_DESCONECTADO">WIFI desconectado</string>
+    <string name="CONECTE_WIFI">Conecte el wifi.</string>
+    <string name="DIPALZA_NAME">Dipalza:</string>
+    <string name="BORRAR_INFORMACION">Desea borrar toda la información?</string>
+    <string name="TERMINO_TRANSMISION">Espere al término de transmisión</string>
+
+
 </resources>

@@ -1,10 +1,12 @@
 package main.dipalza.transmision;
 
 import main.dipalza.ot.OTCliente;
+import main.dipalza.ot.OTEspeciales;
 import main.dipalza.ot.OTProducto;
 
 import com.grupo.basedatos.Cliente;
 import com.grupo.basedatos.Producto;
+import com.grupo.basedatos.Especiales;
 
 public final class UtilitarioConversion
 {
@@ -24,12 +26,12 @@ public final class UtilitarioConversion
 	{
 		OTProducto otProducto = new OTProducto();
 		otProducto.setArticulo(producto.getArticulo());
-		otProducto.setCosto(new Double(producto.getCosto()));
+		otProducto.setCosto(Double.valueOf(producto.getCosto()));
 		otProducto.setIdProducto(Short.valueOf(producto.getIdProducto()));
-		otProducto.setIla(new Double(producto.getIla()));
+		otProducto.setIla(Double.valueOf(producto.getIla()));
 		otProducto.setNombre(producto.getNombre());
-		otProducto.setPrecio(new Double(producto.getPrecio()));
-		otProducto.setStock(new Double(producto.getStock()));
+		otProducto.setPrecio(Double.valueOf(producto.getPrecio()));
+		otProducto.setStock(Double.valueOf(producto.getStock()));
 		otProducto.setUnidad(producto.getUnidad());
 		otProducto.setProveedor(producto.getProveedor());
 		return otProducto;
@@ -53,5 +55,12 @@ public final class UtilitarioConversion
 		otCliente.setTelefono(cliente.getTelefono());
 		otCliente.setCiudad(cliente.getCiudad());
 		return otCliente;
+	}
+
+	public static OTEspeciales toOTEspeciales(Especiales especiales)
+	{
+		OTEspeciales otEspeciales = new OTEspeciales();
+		otEspeciales.setArticulo(especiales.getArticulo());
+		return otEspeciales;
 	}
 }

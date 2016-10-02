@@ -1,5 +1,6 @@
 package main.dipalza;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 
@@ -18,13 +19,14 @@ public abstract class ActivityHandler extends DashboardActivity
 	public static final int MSG_ERROR = 1;
 	public static final int MSG_AVANCE = 2;
 	public static final int MSG_NOTIFICACION = 3;
+	public static final int MSG_FINALIZADO = 4;
 	
-	private HanlderRecepcion handler;
+	private ReceptionHandler handler;
 	
 	public ActivityHandler()
 	{
 		super();
-		handler = new HanlderRecepcion();
+		handler = new ReceptionHandler();
 	}
 	
 	
@@ -33,7 +35,7 @@ public abstract class ActivityHandler extends DashboardActivity
 	 * Obtiene el valor del atributo handler.
 	 * @return El valor de handler.
 	 */
-	public final HanlderRecepcion getHandler()
+	public final ReceptionHandler getHandler()
 	{
 		return handler;
 	}
@@ -42,7 +44,7 @@ public abstract class ActivityHandler extends DashboardActivity
 	 * Establece el valor al atributo handler.
 	 * @param handler el valor a establecer a handler.
 	 */
-	public final void setHandler(HanlderRecepcion handler)
+	public final void setHandler(ReceptionHandler handler)
 	{
 		this.handler = handler;
 	}
@@ -53,7 +55,8 @@ public abstract class ActivityHandler extends DashboardActivity
 	 * Clase que recibe mensajes asincronicos.
 	 * @author cursor
 	 */
-	private class HanlderRecepcion extends Handler
+	@SuppressLint("HandlerLeak")
+  private class ReceptionHandler extends Handler
 	{
 		/**
 		 * {@inheritDoc}
@@ -65,6 +68,7 @@ public abstract class ActivityHandler extends DashboardActivity
 			procesarMensajeAvance(message);
 			procesarMensajeError(message);
 			procesarMensajeNotificacion(message);
+			procesarMensajeFinalizado(message);
 		}
 	}
 	
@@ -86,5 +90,7 @@ public abstract class ActivityHandler extends DashboardActivity
 	 * @param message Mensaje a procesar.
 	 */
 	protected abstract void procesarMensajeAvance(Message message);
+	
+	protected abstract void procesarMensajeFinalizado(Message message);
 
 }
